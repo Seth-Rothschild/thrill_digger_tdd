@@ -1,5 +1,6 @@
 import random
 
+
 class Board():
     def __init__(self, height=5, width=8):
         self.height = height
@@ -43,14 +44,14 @@ class Board():
     def is_bomb(self, pos):
         row, column = pos
         return self.values[row][column] in ['boom', 'rupoor']
-    
+
     def list_adj(self, pos):
         row, column = pos
         add = [-1, 0, 1]
-        adj_rows = [row + i for i in add 
-                       if row + i in range(self.height)]
-        adj_cols = [column + i for i in add 
-                       if column + i in range(self.width)]
+        adj_rows = [row + i for i in add
+                    if row + i in range(self.height)]
+        adj_cols = [column + i for i in add
+                    if column + i in range(self.width)]
         adjacents = []
         for i in adj_rows:
             for j in adj_cols:
