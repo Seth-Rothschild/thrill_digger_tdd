@@ -8,6 +8,13 @@ def new():
     new.set_bomb((0, 0))
     new.set_bomb((2, 2))
     new.set_bomb((4, 7))
+    new.set_bomb((4, 6))
+    new.set_bomb((4, 5))
+    new.set_bomb((3, 7))
+    new.set_bomb((3, 5))
+    new.set_bomb((2, 7))
+    new.set_bomb((3, 3), btype='rupoor')
+    new.fill_board()
     return new
 
 
@@ -45,10 +52,6 @@ def test_set_bomb(new):
     assert new.is_bomb((4, 7))
 
 
-def test_bomb_count(new):
-    assert new.bombs == 3
-
-
 def test_find_adj_bombs(new):
     assert new.find_adj_bombs((1, 1)) == 2
     assert new.find_adj_bombs((0, 1)) == 1
@@ -70,7 +73,6 @@ def test_color_code():
 
 
 def test_fill_board(new):
-    new.fill_board()
     assert new.values[1][1] == 'blue'
     assert new.values[0][1] == 'blue'
     assert new.values[0][2] == 'green'
@@ -84,3 +86,56 @@ def test_game_start():
     for row in new.values:
         for col in row:
             assert col is not None
+
+    new.dig((0, 0))
+    new.game_start()
+    assert not new.game_over
+
+
+def test_dig(new):
+    assert new.dig((1, 1)) == 'blue'
+    assert new.values[1][1] == 'dug'
+    assert new.dig((0, 3)) == 'green'
+    assert new.dig((3, 6)) == 'silver'
+    assert new.score == 106
+    new.dig((0, 0))
+    assert new.bombs == 8
+
+
+def test_score_code():
+    new = Board()
+    assert new.score_code('green') == 1
+    assert new.score_code('blue') == 5
+    assert new.score_code('red') == 20
+    assert new.score_code('silver') == 100
+    assert new.score_code('gold') == 300
+    assert new.score_code('boom') == 0
+
+
+def test_set_rupoor():
+    new = Board(2, 2)
+    new.set_bomb((0, 0), btype='rupoor')
+    new.fill_board()
+    new.dig((0, 1))
+    new.dig((1, 0))
+
+    assert new.bombs == 1
+    assert new.dig((0, 0)) == 'rupoor'
+    assert new.score == 0
+    assert new.values[1][1] == 'blue'
+    assert new.bombs == 0
+
+
+def test_game_end(new):
+    assert not new.game_over
+    new.dig((0, 0))
+    assert new.game_over
+
+
+def test_random_play(new):
+    pos, result = new.random_play()
+    row, column = pos
+    assert new.values[row][column] == 'dug'
+    for i in range(10):
+        assert new.random_play()[1] != 'dug'
+        print(new.random_play())
