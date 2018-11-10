@@ -10,7 +10,9 @@ class Board():
     def clear_board(self):
         self.bombs = 0
         self.score = 0
+        self.moves = []
         self.game_over = False
+        self.game_won = False
         self.values = [[None for _ in range(self.width)]
                        for _ in range(self.height)]
 
@@ -21,11 +23,11 @@ class Board():
                     nbombs = self.find_adj_bombs((i, j))
                     self.set_value((i, j), self.color_code(nbombs))
 
-    def game_start(self):
+    def game_start(self, booms=8, rupoors=8):
         self.clear_board()
-        while self.bombs < 8:
+        while self.bombs < booms:
             self.set_value(self.set_random(''), 'boom')
-        while self.bombs < 16:
+        while self.bombs < booms + rupoors:
             self.set_value(self.set_random(''), 'rupoor')
         self.fill_board()
 
@@ -41,19 +43,26 @@ class Board():
     def is_bomb(self, pos):
         row, column = pos
         return self.values[row][column] in ['boom', 'rupoor']
-
-    def find_adj_bombs(self, pos):
+    
+    def list_adj(self, pos):
         row, column = pos
         add = [-1, 0, 1]
-        lookup_rows = [row + i for i in add 
+        adj_rows = [row + i for i in add 
                        if row + i in range(self.height)]
-        lookup_cols = [column + i for i in add 
+        adj_cols = [column + i for i in add 
                        if column + i in range(self.width)]
+        adjacents = []
+        for i in adj_rows:
+            for j in adj_cols:
+                if not (i == row and j == column):
+                    adjacents.append((i, j))
+        return adjacents
+
+    def find_adj_bombs(self, pos):
         adj_bombs = 0
-        for i in lookup_rows:
-            for j in lookup_cols:
-                if self.is_bomb((i, j)) and ((i, j) != pos):
-                    adj_bombs += 1
+        for pos in self.list_adj(pos):
+            if self.is_bomb(pos):
+                adj_bombs += 1
         return adj_bombs
 
     def color_code(self, num):
@@ -76,15 +85,17 @@ class Board():
         row, column = pos
         result = self.values[row][column]
         self.set_value(pos, 'dug')
-        if result == 'rupoor':
-            self.bombs -= 1
-        elif result == 'boom':
-            self.bombs -= 1
+
+        if result == 'boom':
             self.game_over = True
 
         if result != 'dug':
             self.score += self.score_code(result)
             self.score = max(self.score, 0)
+            self.moves.append(pos)
+            if self.bombs == self.size - len(self.moves):
+                self.game_over = True
+                self.game_won = True
             return result
         else:
             return None

@@ -100,6 +100,7 @@ def test_dig(new):
     assert new.score == 106
     new.dig((0, 0))
     assert new.bombs == 8
+    assert len(new.moves) == 4
 
 
 def test_score_code():
@@ -137,3 +138,20 @@ def test_random_play(new):
     assert new.values[row][column] == 'dug'
     for i in range(10):
         assert new.random_play()[1] != 'dug'
+
+
+def test_list_adj(new):
+    assert len(new.list_adj((0, 0))) == 3
+    assert len(new.list_adj((0, 1))) == 5
+    assert len(new.list_adj((1, 1))) == 8
+
+
+def test_game_win():
+    small_board = Board(2, 2)
+    small_board.set_value((0, 0), 'boom')
+    small_board.set_value((0, 1), 'boom')
+    small_board.set_value((1, 0), 'boom')
+    small_board.fill_board()
+    small_board.dig((1, 1))
+    assert small_board.game_over is True
+    assert small_board.game_won is True
