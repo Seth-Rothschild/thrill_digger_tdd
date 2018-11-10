@@ -14,26 +14,33 @@ class Board():
         self.values = [[None for _ in range(self.width)]
                        for _ in range(self.height)]
 
-    def set_bomb(self, pos, btype='boom'):
+    def fill_board(self):
+        for i in range(self.height):
+            for j in range(self.width):
+                if not self.is_bomb((i, j)):
+                    nbombs = self.find_adj_bombs((i, j))
+                    self.set_value((i, j), self.color_code(nbombs))
+
+    def game_start(self):
+        self.clear_board()
+        while self.bombs < 8:
+            self.set_value(self.set_random(''), 'boom')
+        while self.bombs < 16:
+            self.set_value(self.set_random(''), 'rupoor')
+        self.fill_board()
+
+    def set_value(self, pos, value):
         row, column = pos
-        assert btype in ['boom', 'rupoor']
         lookup = self.values[row][column]
-        if lookup not in ['boom', 'rupoor']:
+        if lookup in ['boom', 'rupoor']:
+            self.bombs -= 1
+        if value in ['boom', 'rupoor']:
             self.bombs += 1
-        self.values[row][column] = btype
+        self.values[row][column] = value
 
     def is_bomb(self, pos):
         row, column = pos
         return self.values[row][column] in ['boom', 'rupoor']
-
-    def set_value(self, pos, value):
-        self.values[pos[0]][pos[1]] = value
-
-    def set_random(self, value):
-        row = random.randint(0, self.height - 1)
-        col = random.randint(0, self.width - 1)
-        self.set_value((row, col), value)
-        return (row, col)
 
     def find_adj_bombs(self, pos):
         row, column = pos
@@ -57,20 +64,10 @@ class Board():
                 7: 'gold', 8: 'gold'}
         return rmap[num]
 
-    def fill_board(self):
-        for i in range(self.height):
-            for j in range(self.width):
-                if not self.is_bomb((i, j)):
-                    bombs = self.find_adj_bombs((i, j))
-                    self.values[i][j] = self.color_code(bombs)
-
-    def game_start(self):
-        self.clear_board()
-        while self.bombs < 8:
-            self.set_bomb(self.set_random(''))
-        while self.bombs < 16:
-            self.set_bomb(self.set_random(''), btype='rupoor')
-        self.fill_board()
+    def score_code(self, color):
+        smap = {'green': 1, 'blue': 5, 'red': 20,
+                'silver': 100, 'gold': 300, 'boom': 0, 'rupoor': -10}
+        return smap[color]
 
     def dig(self, pos):
         if self.game_over:
@@ -78,7 +75,7 @@ class Board():
 
         row, column = pos
         result = self.values[row][column]
-        self.values[row][column] = 'dug'
+        self.set_value(pos, 'dug')
         if result == 'rupoor':
             self.bombs -= 1
         elif result == 'boom':
@@ -87,19 +84,24 @@ class Board():
 
         if result != 'dug':
             self.score += self.score_code(result)
+            self.score = max(self.score, 0)
             return result
         else:
             return None
 
-    def score_code(self, color):
-        smap = {'green': 1, 'blue': 5, 'red': 20,
-                'silver': 100, 'gold': 300, 'boom': 0, 'rupoor': -10}
-        return smap[color]
+    def get_random(self):
+        row = random.randint(0, self.height - 1)
+        col = random.randint(0, self.width - 1)
+        return (row, col)
+
+    def set_random(self, value):
+        pos = self.get_random()
+        self.set_value(pos, value)
+        return pos
 
     def random_play(self):
         result = None
         while result is None:
-            row = random.randint(0, self.height - 1)
-            column = random.randint(0, self.width - 1)
-            result = self.dig((row, column))
-        return (row, column), result
+            pos = self.get_random()
+            result = self.dig(pos)
+        return pos, result

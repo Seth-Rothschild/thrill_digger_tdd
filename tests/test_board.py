@@ -5,15 +5,15 @@ from thrill_digger_tdd.board import Board
 @pytest.fixture
 def new():
     new = Board(5, 8)
-    new.set_bomb((0, 0))
-    new.set_bomb((2, 2))
-    new.set_bomb((4, 7))
-    new.set_bomb((4, 6))
-    new.set_bomb((4, 5))
-    new.set_bomb((3, 7))
-    new.set_bomb((3, 5))
-    new.set_bomb((2, 7))
-    new.set_bomb((3, 3), btype='rupoor')
+    new.set_value((0, 0), 'boom')
+    new.set_value((2, 2), 'boom')
+    new.set_value((4, 7), 'boom')
+    new.set_value((4, 6), 'boom')
+    new.set_value((4, 5), 'boom')
+    new.set_value((3, 7), 'boom')
+    new.set_value((3, 5), 'boom')
+    new.set_value((2, 7), 'boom')
+    new.set_value((3, 3), 'rupoor')
     new.fill_board()
     return new
 
@@ -46,7 +46,7 @@ def test_values(new):
     assert len(new.values[0]) == new.width
 
 
-def test_set_bomb(new):
+def test_is_bomb(new):
     assert new.is_bomb((0, 0))
     assert new.is_bomb((2, 2))
     assert new.is_bomb((4, 7))
@@ -112,12 +112,11 @@ def test_score_code():
     assert new.score_code('boom') == 0
 
 
-def test_set_rupoor():
+def test_rupoor():
     new = Board(2, 2)
-    new.set_bomb((0, 0), btype='rupoor')
+    new.set_value((0, 0), 'rupoor')
     new.fill_board()
     new.dig((0, 1))
-    new.dig((1, 0))
 
     assert new.bombs == 1
     assert new.dig((0, 0)) == 'rupoor'
@@ -138,4 +137,3 @@ def test_random_play(new):
     assert new.values[row][column] == 'dug'
     for i in range(10):
         assert new.random_play()[1] != 'dug'
-        print(new.random_play())
