@@ -1,0 +1,23 @@
+* Introduction
+thrill_digger_tdd is A python implementation off the best Zelda minigame.. 
+* Use
+* Requirements
+
+* Installation
+** From Github
+To obtain the latest version of this package:
+#+begin_src bash
+pip install git+https://github.com/Seth-Rothschild/thrill_digger_tdd.git
+#+end_src
+
+** Development
+If you wish to work on this project locally, clone this repo and install it in
+development mode:
+
+#+begin_src bash
+git clone https://github.com/Seth-Rothschild/thrill_digger_tdd.git
+cd thrill_digger_tdd
+make dev
+#+end_src
+
+

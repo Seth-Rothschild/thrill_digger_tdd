@@ -1,0 +1,2 @@
+include versioneer.py
+include thrill_digger_tdd/_version.py

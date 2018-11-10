@@ -1,0 +1,7 @@
+attrs
+numpy
+versioneer
+docopt
+click
+hypothesis
+pytest
