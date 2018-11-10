@@ -11,23 +11,22 @@ def read(filename):
 
 
 setup(
-    name='thrill_digger_tdd'
-    , packages=find_packages()
-    , version=versioneer.get_version()
-    , cmdclass=versioneer.get_cmdclass()
-    , entry_points={
+    name='thrill_digger_tdd',
+    packages=find_packages(), 
+    version=versioneer.get_version(), 
+    cmdclass=versioneer.get_cmdclass(), 
+    entry_points={
         'console_scripts': [
             'thrill_digger_tdd = thrill_digger_tdd.__main__:main'
         ]
-    }
-    , url='https://github.com/Seth-Rothschild/thrill_digger_tdd.git'
-    , author='Seth Rothschild'
-    , author_email='seth.j.rothschild@gmail.com'
-    , description='solving problems, taking names'
-    , install_requires=read('requirements.txt')
-    , tests_require=[
-                     'hypothesis'
-                     , 'pytest'
-                    ]
-    , test_suite='pytest'
+    },
+    url='https://github.com/Seth-Rothschild/thrill_digger_tdd.git',
+    author='Seth Rothschild',
+    author_email='seth.j.rothschild@gmail.com',
+    description='Like adventure? Danger?',
+    install_requires=read('requirements.txt'),
+    tests_require=[
+        'hypothesis', 'pytest'
+    ],
+    test_suite='pytest'
 )
