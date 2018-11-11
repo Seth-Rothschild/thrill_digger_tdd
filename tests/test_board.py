@@ -81,11 +81,16 @@ def test_fill_board(new):
 
 def test_game_start():
     new = Board()
-    new.game_start()
-    assert new.bombs == 16
+    new.game_start(booms=5, rupoors=4)
+    assert new.bombs == 9
+    values_list = []
+
     for row in new.values:
+        values_list += row
         for col in row:
             assert col is not None
+    assert values_list.count('boom') == 5
+    assert values_list.count('rupoor') == 4
 
     new.dig((0, 0))
     new.game_start()

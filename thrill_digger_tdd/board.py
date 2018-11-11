@@ -29,7 +29,9 @@ class Board():
         while self.bombs < booms:
             self.set_value(self.set_random(''), 'boom')
         while self.bombs < booms + rupoors:
-            self.set_value(self.set_random(''), 'rupoor')
+            pos = self.get_random()
+            if not self.is_bomb(pos):
+                self.set_value(pos, 'rupoor')
         self.fill_board()
 
     def set_value(self, pos, value):
