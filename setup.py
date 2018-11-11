@@ -12,9 +12,9 @@ def read(filename):
 
 setup(
     name='thrill_digger_tdd',
-    packages=find_packages(), 
-    version=versioneer.get_version(), 
-    cmdclass=versioneer.get_cmdclass(), 
+    packages=find_packages(),
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     entry_points={
         'console_scripts': [
             'thrill_digger_tdd = thrill_digger_tdd.__main__:main'

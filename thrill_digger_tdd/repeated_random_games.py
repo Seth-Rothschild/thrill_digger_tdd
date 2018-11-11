@@ -1,5 +1,6 @@
 from thrill_digger_tdd.board import Board
 
+
 def play(num_games):
     play_area = Board(5, 8)
     scores = []
