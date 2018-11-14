@@ -1,23 +1,32 @@
-* Introduction
-thrill_digger_tdd is A python implementation off the best Zelda minigame.. 
+* Welcome!
+"Do you like money? How about explosions? Well, dig up some
+Rupees before you hit a bomb in a suspensful game of *Thrill
+Digger*! Want to try it?" -Tubert
+
+This package, ~thrill_digger_tdd~, is a faithful Python
+implementation of one of the best games ever created. Thrill
+Digger is a minigame in [[https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_Skyward_Sword][Legend of Zelda: Skyward Sword]].
+
 * Use
-* Requirements
+You can initialize and play a game in Python with
+
+#+BEGIN_SRC python
+from thrill_digger_tdd import Board
+play_area = Board()
+play_area.new_game()
+#+END_SRC
+
+There is a work in progress command line version which can
+be run from inside the package with
+#+BEGIN_SRC bash
+python thrill_digger_tdd/play.py
+#+END_SRC
 
 * Installation
 ** From Github
 To obtain the latest version of this package:
 #+begin_src bash
 pip install git+https://github.com/Seth-Rothschild/thrill_digger_tdd.git
-#+end_src
-
-** Development
-If you wish to work on this project locally, clone this repo and install it in
-development mode:
-
-#+begin_src bash
-git clone https://github.com/Seth-Rothschild/thrill_digger_tdd.git
-cd thrill_digger_tdd
-make dev
 #+end_src
 
 
