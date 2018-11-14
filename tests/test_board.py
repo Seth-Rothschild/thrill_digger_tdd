@@ -160,3 +160,19 @@ def test_game_win():
     small_board.dig((1, 1))
     assert small_board.game_over is True
     assert small_board.game_won is True
+
+
+def test_valid_start():
+    failed_start = Board(2, 2)
+    try:
+        failed_start.game_start()
+        assert False
+
+    except AssertionError:
+        assert failed_start.values[0][0] is None
+    try:
+        failed_start.game_start(2, 2)
+        assert False
+
+    except AssertionError:
+        assert failed_start.values[0][0] is None

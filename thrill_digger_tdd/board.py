@@ -26,6 +26,7 @@ class Board():
 
     def game_start(self, booms=8, rupoors=8):
         self.clear_board()
+        assert booms + rupoors < self.size, "Too many bombs for this board"
         while self.bombs < booms:
             self.set_value(self.set_random(''), 'boom')
         while self.bombs < booms + rupoors:
