@@ -176,3 +176,18 @@ def test_valid_start():
 
     except AssertionError:
         assert failed_start.values[0][0] is None
+
+
+def test_ruplist(new):
+    new.dig((1, 1))
+    new.dig((0, 3))
+
+    new.dig((3, 6))
+    new.dig((3, 6))
+
+    new.dig((0, 0))
+    new.dig((0, 0))
+    true_results = ['blue', 'green', 'silver', 'boom']
+    for i, result in enumerate(true_results):
+        assert new.ruplist[i] == result
+    assert len(new.ruplist) == len(new.moves)

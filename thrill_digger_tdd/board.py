@@ -12,6 +12,7 @@ class Board():
         self.bombs = 0
         self.score = 0
         self.moves = []
+        self.ruplist = []
         self.game_over = False
         self.game_won = False
         self.values = [[None for _ in range(self.width)]
@@ -97,6 +98,7 @@ class Board():
             self.score += self.score_code(result)
             self.score = max(self.score, 0)
             self.moves.append(pos)
+            self.ruplist.append(result)
             if self.bombs == self.size - len(self.moves):
                 self.game_over = True
                 self.game_won = True
